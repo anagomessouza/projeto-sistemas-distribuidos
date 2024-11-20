@@ -1,20 +1,44 @@
 const axios = require('axios');
 const fs = require('fs');
+const path = require('path');
 
-const MASTER_URL = 'http://localhost:3000/consistent';
-const REPLICA_URL = 'http://localhost:4000/inconsistent';
+// Configuração da URL do servidor principal
+const SERVER_URL = 'http://127.0.0.1:3000/sync'; // Altere para 127.0.0.1 caso o problema seja com o localhost
 
-// Baixa um arquivo de um servidor
-async function downloadFile(url, saveAs) {
-    const response = await axios.get(url, { responseType: 'stream' });
-    response.data.pipe(fs.createWriteStream(saveAs));
-    console.log(`${saveAs} baixado com sucesso.`);
-}
+// Caminho para o arquivo de dados da réplica
+const REPLICA_FILE = path.join(__dirname, 'replica_stock_data.txt');
 
-// Faz o download das versões consistente e desatualizada
-async function main() {
-    await downloadFile(MASTER_URL, 'consistent_stock_data.txt'); // Arquivo do servidor principal
-    await downloadFile(REPLICA_URL, 'inconsistent_stock_data.txt'); // Arquivo da réplica
-}
+// Função para sincronizar os dados da réplica com o servidor principal
+const syncWithMasterServer = async () => {
+    try {
+        // Fazendo a requisição para o servidor principal
+        const response = await axios.get(SERVER_URL);
+        
+        // Verificando a resposta do servidor principal
+        if (response.status === 200) {
+            console.log('Dados recebidos do servidor principal.');
 
-main();
+            // Salvando os dados recebidos no arquivo da réplica
+            fs.writeFileSync(REPLICA_FILE, response.data);
+            console.log('Dados sincronizados e salvos na réplica.');
+        } else {
+            console.log('Erro ao obter dados do servidor principal: ' + response.statusText);
+        }
+    } catch (error) {
+        console.error('Erro ao tentar sincronizar com o servidor principal:', error.message);
+    }
+};
+
+// Função para verificar se os dados da réplica estão atualizados
+const checkReplicaData = () => {
+    if (fs.existsSync(REPLICA_FILE)) {
+        const data = fs.readFileSync(REPLICA_FILE, 'utf8');
+        console.log('Dados da réplica:', data);
+    } else {
+        console.log('Arquivo da réplica não encontrado. Iniciando sincronização...');
+        syncWithMasterServer();
+    }
+};
+
+// Chama a função para verificar e sincronizar os dados
+checkReplicaData();
