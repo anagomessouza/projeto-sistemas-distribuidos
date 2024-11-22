@@ -9,11 +9,9 @@ const PORT = 3001;
 
 const filePath = path.join(__dirname, 'dataReplica.txt');
 
-// Middleware para processar JSON no corpo das requisições
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  // Envia o arquivo para o usuário
   res.download(filePath, 'dataReplica.txt', (err) => {
     if (err) {
       console.error('Erro ao enviar o arquivo:', err);
@@ -26,7 +24,6 @@ app.post('/atualizarArquivo', (req, res) => {
   const { fileContent } = req.body;
 
   if (fileContent) {
-    // Salva o conteúdo no arquivo
     fs.writeFile(filePath, fileContent, (err) => {
       if (err) {
         console.error('Erro ao salvar o arquivo:', err);

@@ -12,20 +12,18 @@ const filePath = path.join(__dirname, 'data.txt');
 let updateCount = 0;
 
 function atualizarPrecosEEnviar() {
-  atualizarPrecos(); // Atualiza os preços no arquivo
-  updateCount++; // Incrementa o contador
+  atualizarPrecos(); 
+  updateCount++; 
 
-  // Verifica se já realizou 10 atualizações
   if (updateCount >= 10) {
-    enviarArquivoAutomatico(); // Envia o arquivo automaticamente
-    updateCount = 0; // Reseta o contador
+    enviarArquivoAutomatico(); 
+    updateCount = 0; 
   }
-}
+};
 
-// Função para enviar o arquivo para a API automaticamente
 async function enviarArquivoAutomatico() {
   try {
-    const fileData = fs.readFileSync(filePath, 'utf8'); // Lê o conteúdo do arquivo
+    const fileData = fs.readFileSync(filePath, 'utf8'); 
     const response = await axios.post('http://localhost:3001/atualizarArquivo', { 
       fileContent: fileData, 
     });
@@ -34,12 +32,9 @@ async function enviarArquivoAutomatico() {
   } catch (error) {
     console.error('Erro ao enviar o arquivo automaticamente:', error.message);
   }
-}
+};
 
 app.get('/', (req, res) => {
-  
-  
-  // Envia o arquivo para o usuário
   res.download(filePath, 'data.txt', (err) => {
     if (err) {
       console.error('Erro ao enviar o arquivo:', err);
