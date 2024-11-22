@@ -3,8 +3,10 @@ const path = require('path');
 const axios = require('axios');
 const fs = require('fs')
 const atualizarPrecos = require('./atualizarPrecos');
+const cors = require('cors');
 
 const app = express();
+app.use(cors('http://localhost:5500'));
 const PORT =  3000;
 const filePath = path.join(__dirname, 'data.txt');
 let updateCount = 0;

@@ -1,17 +1,20 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 
 const app = express();
+app.use(cors('http://localhost:5500'));
 const PORT = 3001;
-const filePath = path.join(__dirname, 'data.txt');
+
+const filePath = path.join(__dirname, 'dataReplica.txt');
 
 // Middleware para processar JSON no corpo das requisições
 app.use(express.json());
 
 app.get('/', (req, res) => {
   // Envia o arquivo para o usuário
-  res.download(filePath, 'data.txt', (err) => {
+  res.download(filePath, 'dataReplica.txt', (err) => {
     if (err) {
       console.error('Erro ao enviar o arquivo:', err);
       res.status(500).send('Erro ao enviar o arquivo.');
