@@ -1,0 +1,11 @@
+{
+  "coca_cola": {
+    "preco": "175,51"
+  },
+  "amazon": {
+    "preco": "139,42"
+  },
+  "google": {
+    "preco": "222,86"
+  }
+}

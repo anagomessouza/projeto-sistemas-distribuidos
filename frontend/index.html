@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cliente de Download</title>
 </head>
+
 <body>
   <h1>Download de Arquivo do Mercado de Ações</h1>
-  <button id="downloadAtualizado"> <a href="http://localhost:3000" target = '_blank'>Dados mercado de ações atualizado</a></button>
-  <button id="downloadDesatualizado"> <a href="http://localhost:3001" target = '_blank'>Dados mercado de ações réplica</a></button>
-  <pre id="resultado"></pre>
+  <button id="downloadAtualizado">
+    <a href="http://localhost:3000" target='_blank'>
+      Dados mercado de ações atualizado
+    </a>
+  </button>
 
-  <script>
-    document.getElementById('downloadAtualizado').addEventListener('click', async () => {
-      const response = await fetch('http://localhost:3000');
-      const data = await response.text();
-      document.getElementById('resultado').textContent = data;
-    });
-
-    document.getElementById('downloadDesatualizado').addEventListener('click', async () => {
-      const response = await fetch('http://localhost:3001');
-      const data = await response.text();
-      document.getElementById('resultado').textContent = data;
-    });
-  </script>
+  <button id="downloadDesatualizado">
+    <a href="http://localhost:3001" target='_blank'>
+      Dados mercado de ações réplica
+    </a>
+  </button>
 </body>
+
 </html>
